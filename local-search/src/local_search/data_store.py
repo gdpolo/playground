@@ -23,3 +23,10 @@ class DataStore(metaclass=abc.ABCMeta):
     def get_bulk(self, keys: List[str]):
         pass
 
+    @abc.abstractmethod
+    def export_to_file(self, file_path):
+        pass
+
+    @abc.abstractmethod
+    def import_from_file(self, file_path):
+        pass

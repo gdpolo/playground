@@ -1,6 +1,7 @@
 import abc
 from typing import List
 from src.local_search.KeyValuePair import KeyValuePair
+import json
 
 
 class DictDataStore(metaclass=abc.ABCMeta):
@@ -23,3 +24,18 @@ class DictDataStore(metaclass=abc.ABCMeta):
 
     def show_db(self):
         print(str(self.data).replace("], ", "],\n"))
+
+    def export_to_file(self, file_path):
+        self._to_json(file_path)
+
+    def import_from_file(self, file_path):
+        self._from_json(file_path)
+
+    def _to_json(self, file_path: str):
+        with open(file_path, 'w') as file:
+            json.dump(self.data, file)
+
+    def _from_json(self, file_path: str):
+        with open(file_path, 'r') as file:
+            data_str = file.read()
+        self.data = json.loads(data_str)
