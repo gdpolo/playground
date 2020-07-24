@@ -46,6 +46,9 @@ class LocalSearch:
             print(str(results).replace(", ", ",\n"))
         else:
             print("No results found")
+            return "No results found"
+
+        return str(results) # todo - need to wrap as response
 
     def _put_data(self, words: List[str], file_path: str):
         for word in words:

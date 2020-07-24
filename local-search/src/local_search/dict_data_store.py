@@ -48,7 +48,12 @@ class DictDataStore(metaclass=abc.ABCMeta):
 
     def _from_json(self, file_path: str):
         with open(file_path, 'r') as file:
-            data_str = file.read()
+            data_str = ""
+            line = " "
+            while(line):
+                data_str += line
+                line = file.readline()
+
         return json.loads(data_str)
 
 
