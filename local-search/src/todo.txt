@@ -1,0 +1,20 @@
+'''
+todo
+    - create utility packages (logger)
+    - create setup.py
+    - flask
+        - create_index
+        - load_index
+        - search
+    - How to keep the state if we are a server?
+    - autocompletion, similar words, trie
+    - Parallel computation
+    - Measure performance
+    - mongo DB, scale
+    - configure ignore files/dir
+    - configure ignore prefix (home)
+    - enum for entities
+    - transactions
+    - bson?
+
+'''
