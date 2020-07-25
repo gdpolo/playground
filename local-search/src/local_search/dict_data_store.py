@@ -27,6 +27,12 @@ class DictDataStore(metaclass=abc.ABCMeta):
             return None
         return self.data[entity][key]
 
+    def get_all_keys(self, entity: str) -> List[str]:
+        if not entity in self.data:
+            return []
+
+        return self.data[entity].keys()
+
     def put_bulk(self, entity: str, key_value_pairs: List[KeyValuePair]):
         pass
 

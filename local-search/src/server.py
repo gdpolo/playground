@@ -16,7 +16,7 @@ def _init_search_engine(root_dir: str, search_index_path: str, force_build_index
         local_search.index_directory(root_dir) # todo - windows is different?
         local_search._data_store.export_to_file(search_index_path)
     else:
-        local_search._data_store.import_from_file(search_index_path)
+        local_search.load_index_from_file(search_index_path)
 
     return local_search
 local_search = None

@@ -16,6 +16,10 @@ class DataStore(metaclass=abc.ABCMeta):
         return None
 
     @abc.abstractmethod
+    def get_all_keys(self, entity: str) -> List[str]:
+        pass
+
+    @abc.abstractmethod
     def put_bulk(self, entity: str, key_value_pairs: List[KeyValuePair]):
         pass
 

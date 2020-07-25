@@ -1,16 +1,19 @@
 from os.path import basename
 from os import walk
 from os.path import sep, splitext, join
-from typing import List
+from typing import List, Set
 from hashlib import md5
 
+from local_search.trie import Trie
 from src.local_search.dict_data_store import DictDataStore
 
 # TODO - ignore directories or files
 
+
 class LocalSearch:
     def __init__(self):
         self._data_store = DictDataStore()
+        self.trie = Trie()
 
     def index_directory(self, root_dir: str):
         # Index current directoy
@@ -25,14 +28,43 @@ class LocalSearch:
             for sub_directory in subdir_list:
                 self.index_directory(sub_directory)
 
-    def search(self, key_words: List[str]):
-        print("*** Searching for %s" % str(key_words))
+    def load_index_from_file(self, file_path: str):
+        self._data_store.import_from_file(file_path)
 
-        first_key = key_words[0]
-        results = set(self._data_store.get("words", first_key.lower()))
+        for word in self._data_store.get_all_keys("words"):
+            self.trie.insert_word(word)
 
-        for i in range(1,len(key_words)):
-            candidate_results = self._data_store.get("words", key_words[i].lower())
+    def _search_single_prefix(self, prefix: str) -> Set[any]:
+        key_words_with_prefix = self.trie.find_words_with_prefix(prefix)
+
+        results = set()
+
+        if not key_words_with_prefix:
+            return results
+
+        for word in key_words_with_prefix:
+            keyword_results = self._data_store.get("words", word.lower())
+            if keyword_results: # todo - by design there should always be results for all words in the trie
+                results = results.union(set(keyword_results))
+
+        return results
+
+    def search(self, prefixes: List[str]):
+        print("*** Searching for %s" % str(prefixes))
+
+        if not prefixes:
+            print("No results found")
+            return "No results found"
+
+        first_prefix = prefixes[0]
+        results = self._search_single_prefix(first_prefix)
+
+        if not results:
+            print("No results found")
+            return "No results found"
+
+        for i in range(1,len(prefixes)):
+            candidate_results = self._search_single_prefix(prefixes[i])
             if not candidate_results:
                 results = None
                 break
@@ -43,16 +75,17 @@ class LocalSearch:
         if results:
             # Convert file keys to file paths
             results = [self._data_store.get("files", file_key) for file_key in results]
-            print(str(results).replace(", ", ",\n"))
+            str_results = str(results).replace(", ", ",\n")
+            print(str_results)
+            return str_results  # todo - need to wrap as response
         else:
             print("No results found")
             return "No results found"
 
-        return str(results) # todo - need to wrap as response
-
     def _put_data(self, words: List[str], file_path: str):
         for word in words:
             word_lc = word.lower()
+            self.trie.insert_word(word_lc)
 
             # When time comes, this should be a transaction
             files = self._data_store.get("words", word_lc)
