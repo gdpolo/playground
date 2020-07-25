@@ -21,7 +21,8 @@ class TestTrie(unittest.TestCase):
         trie.insert_word("amore")
         trie.insert_word("big")
         trie.insert_word("book")
+        trie.insert_word("books")
 
         assert set(trie.find_words_with_prefix("am")) == {'america', 'amazon', 'amore'}
         assert set(trie.find_words_with_prefix("amo")) == {'amore'}
-        assert set(trie.find_words_with_prefix("b")) == {'big', 'book'}
+        assert set(trie.find_words_with_prefix("book")) == {'book', 'books'}
