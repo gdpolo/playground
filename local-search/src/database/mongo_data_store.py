@@ -33,7 +33,7 @@ class MongoDataStore(DataStore):
         existing_collections = self.db.list_collection_names()
         for collection_name in ['words', 'files']:
             if collection_name in existing_collections:
-               self.db['collection_name'].drop()
+               self.db[collection_name].drop()
 
     def put(self, entity: str, key: str, value: any):
         collection: Collection = self.db[entity]

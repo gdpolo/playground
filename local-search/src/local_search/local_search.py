@@ -10,6 +10,7 @@ from database.mongo_data_store import MongoDataStore #todo - use factory
 
 # TODO - ignore directories or files
 
+
 class BulkWriterService:
     def __init__(self, data_store: MongoDataStore, batch_size: int = 1000):
         self.batch_size=batch_size
