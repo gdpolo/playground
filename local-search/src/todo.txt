@@ -1,10 +1,11 @@
 '''
 todo
-    - create utility packages (logger)
-    - create setup.py
+    - Bugs:
+        - empty keys
+        - take numbers out of keyword
+    - better performance
     - better entry points for index
     - better json response
-    - add extension to key word
     - similar words
     - when we run with gunicorn we will have to keep the copy of datastore per server
     - Parallel computation
@@ -14,16 +15,24 @@ todo
     - configure filter not
     - configure ignore files/dir
     - configure ignore prefix (home)
-    - enum for entities
     - transactions
     - bson?
-    - save trie and load trie?
+    - docker
 
-    - Trie:
+    - Trie Journey:
     - First saved word in the leafs
     - Then retrieved the word by traversing the tree
     - Then saved only ord(character)
-    - Then saved bitarray
-    - Then maybe need to save key as a bit array too
-    - Need to break words with separators and index for sub words as well
+    - Then saved strings as bytes - it is taking too long to create the memory structures with encoding
+
+    Weekend:
+        - Maybe shoud run multiprocess with half cpus
+        - Solve memory issue or hold it --> If can't really solve it, do it using mongo or sqlite
+        - save trie and load trie?
+        - add extension to key word
+        - Need to break words with separators and index for sub words as well
+        - create utility packages (logger)
+        - create setup.py
+        - enum for entities
+
 '''

@@ -1,6 +1,6 @@
 import abc
 from typing import List, Dict
-from src.local_search.KeyValuePair import KeyValuePair
+from database.KeyValuePair import KeyValuePair
 import json
 
 
@@ -8,30 +8,51 @@ class DictDataStore(metaclass=abc.ABCMeta):
     def __init__(self):
         self.data = {}
 
+    def clear(self):
+        self.data = {}
+
     def put(self, entity: str, key: str, value: any):
         if entity not in self.data:
             self.data[entity] = {}
-        self.data[entity][key] = value
+        self.data[entity][key.encode()] = self.encode_value(value)
 
     def put_if_not_exists(self, entity: str, key: str, value: str):
+
         if not entity in self.data:
             self.data[entity] = {}
+        encoded_key = key.encode()
 
-        if not key in self.data[entity]:
-            self.data[entity][key] = value
+        if not encoded_key in self.data[entity]:
+            self.data[entity][encoded_key] = self.encode_value(value)
+
+    def decode_value(self, value):
+        if type(value) == list:
+            return [element.decode() for element in value]
+        else:
+            return value.encode()
+
+    def encode_value(self, value):
+        if type(value) == list:
+            return [element.encode() for element in value]
+        else:
+            return value.encode()
 
     def get(self, entity: str, key: str) -> any:
         if entity not in self.data:
             return None
-        if key not in self.data[entity]:
+
+        encoded_key = key.encode()
+
+        if encoded_key not in self.data[entity]:
             return None
-        return self.data[entity][key]
+
+        return self.decode_value(self.data[entity][encoded_key])
 
     def get_all_keys(self, entity: str) -> List[str]:
         if not entity in self.data:
             return []
 
-        return self.data[entity].keys()
+        return [key.decode() for key in self.data[entity].keys()]
 
     def put_bulk(self, entity: str, key_value_pairs: List[KeyValuePair]):
         pass

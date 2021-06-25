@@ -1,10 +1,14 @@
 import abc
 from typing import List
-from src.local_search.KeyValuePair import KeyValuePair
+from database.KeyValuePair import KeyValuePair
 
 
 class DataStore(metaclass=abc.ABCMeta):
     def __init__(self):
+        pass
+
+    @abc.abstractmethod
+    def clear(self):
         pass
 
     @abc.abstractmethod

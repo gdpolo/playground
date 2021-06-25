@@ -1,6 +1,6 @@
 import unittest
 
-from local_search.trie import Trie
+from database.trie import Trie
 
 
 class TestTrie(unittest.TestCase):

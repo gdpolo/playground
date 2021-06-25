@@ -1,5 +1,6 @@
 from time import time
 
+# todo - make it a context, so we can use with in the middle of the code
 def log_time( function: callable, *args, **kwargs):
     def wrapper(*args, **kwargs):
         print("Starting run of %s ... " % function.__name__)

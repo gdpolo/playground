@@ -1,7 +1,9 @@
-from typing import Optional, List
+from typing import List
 
 
 class TrieNode:
+    __slots__ = "children", "is_word"
+
     def __init__(self):
         self.children = {}
         self.is_word = False
@@ -18,7 +20,7 @@ class Trie:
         node = self.root
 
         for c in word.lower():
-            code = ord(c)
+            code = self._char_to_key(c)
             if not code in node.children:
                 node.children[code] = TrieNode()
 
@@ -29,7 +31,7 @@ class Trie:
         # Find common prefix node for all words that start with this prefix
         prefix_node = self.root
         for c in prefix.lower():
-            code = ord(c)
+            code = self._char_to_key(c)
             if not code in prefix_node.children:
                 return []
 
@@ -44,6 +46,12 @@ class Trie:
             words.append(prefix)
 
         for code, childNode in node.children.items():
-            words.extend(self._find_leaf_words(prefix + chr(code), childNode))
+            words.extend(self._find_leaf_words("".join([prefix, self._key_to_char(code)]), childNode))
 
         return words
+
+    def _char_to_key(self, char):
+        return ord(char)
+
+    def _key_to_char(self, key):
+        return chr(key)

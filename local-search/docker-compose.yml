@@ -1,0 +1,14 @@
+version: '3'
+services:
+  database:
+    image: 'mongo'
+    container_name: 'mongo-db'
+    environment:
+      - MONGO_INITDB_DATABASE=local_search_data
+      - MONGO_INITDB_ROOT_USERNAME=root
+      - MONGO_INITDB_ROOT_PASSWORD=123456
+    volumes:
+    - ./mongo/init-mongo.js:/docker-entrypoint-initdb.d/init-mongo.js:ro #if move this file, need to change this path
+    - ./mongo-volume:/home/gilda/data/local-search-data
+    ports:
+      - '27017:27017'
